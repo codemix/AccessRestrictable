@@ -1,10 +1,10 @@
 AccessRestrictable
 ==================
 
-This behavior adds automatic access restrictions to your ActiveRecord queries.
+This behavior adds automatic access restriction to your ActiveRecord queries.
 
-By doing so it adds introduces a new security layer right inside the models. If any user
-tries to access resources that he doesn't have permission to, the query will simply be empty.
+By doing so it introduces a new security layer right inside the models. If any user
+tries to access resources that he doesn't have permission to, the query result will simply be empty.
 
 # Installation
 
@@ -46,21 +46,29 @@ class Post extends CActiveRecord
                 'class'             => AccessRestrictable\Behavior',
 
                 // We use a callback to give you max. flexibility
-                'beforeAccessCheck' => function($criteria, $model) {
-                    $table = $table->getTableAlias();
-                    $criteria->addCondition("$table.user_id=:id");
-                    $criteria->params[':id'] = Yii::app()->user->id;
+                'beforeAccessCheck' => function($model) {
+                    $table      = $model->getTableAlias();
+
+                    return array(
+                        'condition' => "$table.user_id = :id",
+                        'params'    => array(':id' => Yii::app()->user->id),
+                    );
                 },
             ),
         );
     }
 ```
 
+The `beforeAccessCheck` parameter expects a [PHP callback](http://php.net/manual/en/language.types.callable.php)
+that receives a `$model` parameter. This is the model as returned by the `model()` method of an ActiveRecord. It
+can either return an array with parameters for `CDbCriteria`, a concrete `CDbCriteria` or `false` to restrict
+access right away.
+
 # Usage
 
 ## Access restriction by default
 
-If you attached the behavior, then whenever you do a query like
+If you attached the behavior, then whenever you do a query like for example
 
 
 ```php

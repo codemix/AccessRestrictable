@@ -13,14 +13,19 @@ use \CActiveRecordBehavior;
 class Behavior extends CActiveRecordBehavior
 {
     /**
-     * @var callable a callback that applies conditions for access restriction to the supplied
-     * CDbCriteria. For example
+     * @var callable a callback that returns a CDbCriteria parameters or a CDbCriteria object that both
+     * represent the conditions access restriction. For example
      *
-     *  function($criteria, $model) {
-     *      $criteria->compare('user_id', Yii::app()->user->id);
+     *  function($model) {
+     *      $table = $model->tableAlias;
+     *      return array(
+     *          'condition' => "$table.user_id = :id',
+     *          'params'    => array(':id' => Yii::app()->user->id,
+     *      );
      *  }
      *
      *  $model is the owner's model object as returned by CActiveRecord::model().
+     *  If the callback returns `false` access is blocked right away.
      */
     public $beforeAccessCheck;
 
@@ -54,7 +59,13 @@ class Behavior extends CActiveRecordBehavior
     public function restricted()
     {
         if(Yii::app()->hasComponent('user') && is_callable($this->beforeAccessCheck)) {
-            call_user_func($this->beforeAccessCheck, $this->owner->getDbCriteria(), $this->owner);
+            $criteria = $this->owner->getDbCriteria();
+            $value = call_user_func($this->beforeAccessCheck, $this->owner->getDbCriteria(), $this->owner);
+            if($value===false) {
+                $criteria->addCondition('0');
+            } elseif(($value instanceof CDbCriteria) || is_array($value)) {
+                $criteria->mergeWith($value);
+            }
         }
         return $this;
     }
