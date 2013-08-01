@@ -1,0 +1,20 @@
+{
+    "name": "codemix/AccessRestrictable",
+    "description": "A Yii ActiveRecordBehavior that automatically applies conditions for access restriction to every query.",
+    "keywords": ["yii", "activerecord", "access","permission"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Härtl",
+            "email": "haertl.mike@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "OAuth2Yii": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.0",
+    }
+}
