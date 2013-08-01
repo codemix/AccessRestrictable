@@ -46,15 +46,23 @@ class Post extends CActiveRecord
                 'class'             => AccessRestrictable\Behavior',
 
                 // We use a callback to give you max. flexibility
-                'beforeAccessCheck' => function($criteria, $model) {
-                    $table = $table->getTableAlias();
-                    $criteria->addCondition("$table.user_id=:id");
-                    $criteria->params[':id'] = Yii::app()->user->id;
+                'beforeAccessCheck' => function($model) {
+                    $table      = $model->getTableAlias();
+
+                    return array(
+                        'condition' => "$table.user_id = :id",
+                        'params'    => array(':id' => Yii::app()->user->id),
+                    );
                 },
             ),
         );
     }
 ```
+
+The `beforeAccessCheck` parameter expects a [PHP callback](http://php.net/manual/en/language.types.callable.php)
+and receives the model as returned by the `model()` method of any ActiveRecord. It can
+either return an array with parameters for `CDbCriteria`, a concrete `CDbCriteria`
+or `false` to restrict access right away.
 
 # Usage
 
