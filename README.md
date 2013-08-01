@@ -11,7 +11,7 @@ tries to access resources that he doesn't have permission to, the query will sim
 We recommend to install the extension with [composer](http://getcomposer.org/). Add this to
 the `require` section of your `composer.json`:
 
-    'codemix/AccessRestrictable' : 'dev-master'
+    'codemix/accessrestrictable' : 'dev-master'
 
 > Note: There's no stable version yet.
 
