@@ -60,7 +60,7 @@ class Behavior extends CActiveRecordBehavior
     {
         if(Yii::app()->hasComponent('user') && is_callable($this->beforeAccessCheck)) {
             $criteria = $this->owner->getDbCriteria();
-            $value = call_user_func($this->beforeAccessCheck, $this->owner->getDbCriteria(), $this->owner);
+            $value = call_user_func($this->beforeAccessCheck, $this->owner);
             if($value===false) {
                 $criteria->addCondition('0');
             } elseif(($value instanceof CDbCriteria) || is_array($value)) {
