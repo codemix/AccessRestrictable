@@ -48,7 +48,7 @@ class Behavior extends CActiveRecordBehavior
     public function unrestricted()
     {
         $this->_unrestricted = true;
-        return $this;
+        return $this->owner;
     }
 
     /**
@@ -67,7 +67,7 @@ class Behavior extends CActiveRecordBehavior
                 $criteria->mergeWith($value);
             }
         }
-        return $this;
+        return $this->owner;
     }
 
     /**
