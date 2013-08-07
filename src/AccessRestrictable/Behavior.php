@@ -43,7 +43,7 @@ class Behavior extends CActiveRecordBehavior
     /**
      * Named scope that disables access restriction for a query.
      *
-     * @return CActiveRecord the model
+     * @return \CActiveRecord the model
      */
     public function unrestricted()
     {
@@ -54,7 +54,7 @@ class Behavior extends CActiveRecordBehavior
     /**
      * Named scope that applies the access control condition to the current criteria.
      *
-     * @return CActiveRecord the model
+     * @return \CActiveRecord the model
      */
     public function restricted()
     {
@@ -63,7 +63,7 @@ class Behavior extends CActiveRecordBehavior
             $value = call_user_func($this->beforeAccessCheck, $this->owner);
             if($value===false) {
                 $criteria->addCondition('0');
-            } elseif(($value instanceof CDbCriteria) || is_array($value)) {
+            } elseif(($value instanceof \CDbCriteria) || is_array($value)) {
                 $criteria->mergeWith($value);
             }
         }
