@@ -33,12 +33,19 @@ class Behavior extends CActiveRecordBehavior
      * Named scope that disables access restriction for a read operation. For use when
      * `enableRestriction` is `true`.
      *
+     * @param bool $resetScope whether to call resetScope() to reset any previously applied restrictions.
+     * Default is `false`.
      * @return \CActiveRecord the model
      */
-    public function unrestricted()
+    public function unrestricted($resetScope=false)
     {
+        $owner = $this->owner;
+
+        if($resetScope) {
+            $owner->resetScope();
+        }
         $this->_unrestricted = true;
-        return $this->owner;
+        return $owner;
     }
 
     /**
@@ -91,6 +98,7 @@ class Behavior extends CActiveRecordBehavior
         if($this->enableRestriction && !$this->_unrestricted) {
             $this->readable();
         }
+        $this->_unrestricted = false;
     }
 
     /**
@@ -101,6 +109,7 @@ class Behavior extends CActiveRecordBehavior
         if($this->enableRestriction && !$this->_unrestricted) {
             $this->readable();
         }
+        $this->_unrestricted = false;
     }
 
     /**
@@ -111,6 +120,7 @@ class Behavior extends CActiveRecordBehavior
         if($this->_writeable || $this->enableRestriction && !$this->_unrestricted) {
             $this->applyWriteRestriction($event);
         }
+        $this->_unrestricted = false;
     }
 
     /**
@@ -121,6 +131,7 @@ class Behavior extends CActiveRecordBehavior
         if($this->_writeable || $this->enableRestriction && !$this->_unrestricted) {
             $this->applyWriteRestriction($event);
         }
+        $this->_unrestricted = false;
     }
 
     /**
