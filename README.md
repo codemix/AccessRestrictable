@@ -148,6 +148,10 @@ You can use the `unrestricted()` scope for this:
 $posts = Post::model()->unrestricted()->findAll();
 ```
 
+> **Note:** If you did another (restricted) query before, the restriction condition will
+> be applied to the internal model criteria. To reset any potential scopes, you could
+> either call `resetScope()` or pass `true` as argument to `unrestricted()`.
+
 ### Override write restriction
 
 For write operations you can call the `force()` method before you write. This will bypass
@@ -203,3 +207,4 @@ behavior are not applied when you use one of the following methods:
 
 We recommend to avoid the above methods, or only use them if you're sure about the
 implications.
+
