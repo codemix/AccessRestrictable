@@ -43,7 +43,7 @@ class Post extends CActiveRecord
     {
         return array(
             'restrictable' => array(
-                'class'             => AccessRestrictable\Behavior',
+                'class'             => 'AccessRestrictable\Behavior',
 
                 // Optional settings with default values
                 // 'enableRestriction' => true
