@@ -139,7 +139,7 @@ class Behavior extends CActiveRecordBehavior
      */
     protected function applyWriteRestriction($event)
     {
-        if(method_exists($this->owner, 'beforeRead')) {
+        if(method_exists($this->owner, 'beforeWrite')) {
             $event->isValid = $this->owner->beforeWrite();
         }
     }
